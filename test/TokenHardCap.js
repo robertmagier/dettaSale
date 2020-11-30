@@ -51,8 +51,8 @@ contract("Deta Sale", function (accounts) {
     console.log(`Deployed Token ${tokenSymbol} at ${tokenInstance.address}`);
   });
   it("Detta Sale deployed", async function () {
-    let hardCap = 3;
-    let softCap = 2;
+    let hardCap = 10;
+    let softCap = 1;
     let rate = 100;
     let wallet = user.public;
     let token = tokenInstance.address;
@@ -99,10 +99,24 @@ contract("Deta Sale", function (accounts) {
     await expect(
       saleInstance.sendTransaction({
         from: buyerAccount,
+        value: 2,
+      })
+    ).to.be.eventually.rejected;
+    await expect(
+      saleInstance.sendTransaction({
+        from: buyerAccount,
         value: 4,
       })
     ).to.be.eventually.rejected;
+
+    await expect(
+      saleInstance.sendTransaction({
+        from: buyerAccount,
+        value: 3,
+      })
+    ).to.be.eventually.fulfilled
+
     let balance = await tokenInstance.balanceOf(buyerAccount);
-    expect(balance.toString()).to.be.equal("0");
+    expect(balance.toString()).to.be.equal("300");
   });
 });

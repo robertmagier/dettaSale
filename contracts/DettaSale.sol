@@ -42,6 +42,8 @@ contract DettaSale is RefundableCrowdsale, Ownable{
      * @param weiAmount Amount of wei contributed
      */
     function _preValidatePurchase(address beneficiary, uint256 weiAmount) internal view {
+        require(weiAmount> (0.5 ether), "Purchase amount less than 0.5 ETH");
+        require(weiAmount< (25 ether), "Purchase amount more than 25 ETH");
         super._preValidatePurchase(beneficiary, weiAmount);
         require(weiRaised().add(weiAmount) <= _cap, "CappedCrowdsale: cap exceeded");
     }
